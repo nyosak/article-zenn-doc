@@ -341,7 +341,9 @@ article-markdown-tool/publish$ ./help.py
 
 ./base_diff.py    show git diff, git diff --cached, git status -s -b, git add -u
   -d --dry              disable git add -u
-./base_add_media.py   TODO copy and git add pictures
+./base_add_media.py   copy and git add pictures
+  -f --files            source files to copy into base media
+  -d --dry              disable file writing and git
 ./base_commit.py      git commit, push
   -m --message          commit message, default: update
 
@@ -736,6 +738,28 @@ Preview: http://127.0.0.1:8888
   - mermaid というより、外側の markdown 処理の干渉か？
   - `#95;` などで回避
 
+![mermaid_escape_error.png](https://nyosak.github.io/article-base-doc/media/70530_publish_zenn_qiita_mermaid_escape_error.png)
+
+スクリーンショットの画像（上記）を追加する。
+
+```bash
+article-markdown-tool/publish$ ./base_add_media.py --file ~/Pictures/Screenshots/mermaid_escape_error.png 
+main launched manually.
+Namespace(files=['/home/kuro/Pictures/Screenshots/mermaid_escape_error.png'], dry=False)
+
+... 略
+
+destination: docs/media/70530_publish_zenn_qiita_mermaid_escape_error.png
+ - ![mermaid_escape_error.png](https://nyosak.github.io/article-base-doc/media/70530_publish_zenn_qiita_mermaid_escape_error.png)
+
+git add docs/media/70530_publish_zenn_qiita_mermaid_escape_error.png
+
+... 以下略
+
+```
+
+出力されたリンクを本文にコピペする。
+
 編集したら、まず、 base を反映させてから確認。
 
 ```bash
@@ -756,7 +780,151 @@ article-markdown-tool/publish$ ./base_commit.py
 
 ```
 
+続いて、 Zenn Qiita に反映させる。既存ファイルへの更新なので update を使う。
 
+```bash
+article-markdown-tool/publish$ ./zenn_update.py 
+main launched manually.
+Namespace(dry=False, nogit=False)
+---
+    Begin --- 2025-05-31 18:07:40
+    -   
+-       create and update an article file for zenn.
+-       
+    ---
+    
+=== BEFORE: articles/70530_publish_zenn_qiita-16575.md ===
+---
+title: "Zenn, Qiita に GitHub から記事公開する — 実装編"
+topics: ["GitHub", "Qiita", "QiitaCLI", "Zenn", "ZennCLI", "Python"]
+type: "tech"
+emoji: "🐚"
+published: true
+---
+# Zenn, Qiita に GitHub から記事公開する — 実装編
+=== Truncated ===
+
+... 略
+
+=== AFTER UPDATE META: articles/70530_publish_zenn_qiita-16575.md ===
+---
+title: "Zenn, Qiita に GitHub から記事公開する — 実装編"
+topics: ["GitHub", "Qiita", "QiitaCLI", "Zenn", "ZennCLI"]
+type: "tech"
+emoji: "🐚"
+published: true
+---
+
+... 以下略
+
+```
+
+```bash
+article-markdown-tool/publish$ ./qiita_update.py 
+main launched manually.
+Namespace(dry=False, nogit=False)
+---
+    Begin --- 2025-05-31 18:08:48
+    -   
+-       create and update an article file for qiita.
+-       
+    ---
+    
+=== BEFORE: public/70530_publish_zenn_qiita.md ===
+---
+title: 'Zenn, Qiita に GitHub から記事公開する — 実装編'
+tags:
+  - GitHub
+  - Qiita
+  - QiitaCLI
+  - Zenn
+  - ZennCLI
+  - Python
+private: false
+updated_at: ''
+id: null
+organization_url_name: null
+slide: false
+ignorePublish: false
+---
+# Zenn, Qiita に GitHub から記事公開する — 実装編
+=== Truncated ===
+
+... 略
+
+=== AFTER UPDATE META: public/70530_publish_zenn_qiita.md ===
+---
+title: 'Zenn, Qiita に GitHub から記事公開する — 実装編'
+tags:
+  - GitHub
+  - Qiita
+  - QiitaCLI
+  - Zenn
+  - ZennCLI
+private: false
+updated_at: ''
+id: null
+organization_url_name: null
+slide: false
+ignorePublish: false
+---
+
+... 以下略
+
+```
+
+良さそうなので、投稿する。
+
+```bash
+article-markdown-tool/publish$ ./all_publish.py
+
+```
+
+いきなり上記でもいいのだが、画像のリンクを確認したいので、 base だけ先行して投稿する。
+
+```bash
+article-markdown-tool/publish$ ./base_publish.py 
+main launched manually.
+Namespace(dry=False, nomerge=False, ignore=False)
+
+... 適当に省略しつつ
+
+Good: status is clear.
+
+gh pr status --jq .currentBranch | select(.baseRefName=="main" and .state=="OPEN") --json id,number,url,state,closed,baseRefName,headRefName
+
+creating a new pull request
+gh pr create --title 70530_publish_zenn_qiita to main --base main --head 70530_publish_zenn_qiita --body 70530_publish_zenn_qiita
+https://github.com/nyosak/article-base-doc/pull/8
+
+gh pr status --jq .currentBranch | select(.baseRefName=="main" and .state=="OPEN") --json id,number,url,state,closed,baseRefName,headRefName
+{"baseRefName":"main","closed":false,"headRefName":"70530_publish_zenn_qiita","id":"PR_kwDOOAVFLM6YbWqK","number":8,"state":"OPEN","url":"https://github.com/nyosak/article-base-doc/pull/8"}
+
+merging pull request #8
+gh pr merge 8 --merge --delete-branch
+Updating 5b55d9d..35ca702
+Fast-forward
+ README.md                                          |   1 +
+ docs/a/70530_publish_zenn_qiita.md                 | 905 +++++++++++++++++++++
+ ...530_publish_zenn_qiita_mermaid_escape_error.png | Bin 0 -> 13784 bytes
+ docs/meta/70530_publish_zenn_qiita.yaml            |   4 +
+ 4 files changed, 910 insertions(+)
+ create mode 100644 docs/a/70530_publish_zenn_qiita.md
+ create mode 100644 docs/media/70530_publish_zenn_qiita_mermaid_escape_error.png
+ create mode 100644 docs/meta/70530_publish_zenn_qiita.yaml
+
+merged
+
+... 以下略
+
+```
+
+リンクが確認できたら、全体を投稿する。
+
+```bash
+article-markdown-tool/publish$ ./all_publish.py
+
+```
 
 
 # 🌖️ 急
