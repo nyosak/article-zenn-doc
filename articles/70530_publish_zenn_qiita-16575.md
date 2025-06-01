@@ -290,9 +290,9 @@ created: \x1b[32marticles/435d6ae8e8ee56.md\x1b[39m
 ```
 
 ```
-Escape Sequence
-\x1b[32m    カラー開始
-\x1b[39m    カラー終了
+ANSI Escape Codes
+\x1b[32m    緑字開始
+\x1b[39m    白字開始
 ```
 
 最初単純にファイル名部分だけを切り取ってみたら、見た目は同じなのに、 if 文判定が合わない。 len() の結果を見ると長さが違う。
@@ -375,19 +375,26 @@ article-markdown-tool/publish$ ./help.py
 
 # edit article published
 
-./base_checkout.py  TODO
+./base_checkout.py  checkout article published for base.
+  1st                   key to checkout; 70530_publish_zenn_qiita
+  -d --dry              disable changes
 
 # edit qiita article only
 
-./qiita_checkout.py TODO
+./qiita_checkout.py checkout article published for zenn.
+  1st                   key to checkout; 70530_publish_zenn_qiita
+  -d --dry              disable changes
 
 # edit zenn article only
 
-./zenn_checkout.py  TODO
+./zenn_checkout.py  checkout article published for qiita.
+  1st                   key to checkout; 70530_publish_zenn_qiita
+  -d --dry              disable changes
 
 # miscellaneous
 
 ./show_current.py  show current series, name, key, now
+./show_status.py   git status for all repositories
 ./help.py          show this help message
 
 ```
@@ -594,6 +601,32 @@ qiita_publish(qiita_publish.py) --> QiitaPublish
 all_publish(all_publish.py) ---> BasePublish
 all_publish(all_publish.py) ---> ZennPublish
 all_publish(all_publish.py) ---> QiitaPublish
+
+linkStyle default color:#936, stroke:#f69, stroke-width:2px;
+classDef default fill:#fcc, stroke:#345, stroke-width:3px, font-size:14pt;
+
+```
+
+#### 投稿済み原稿の再編集
+
+```mermaid
+%%{init:
+	{
+		"theme": "forest",
+		"logLevel": 2,
+		"flowchart": { "curve": "linear" }
+	}
+}%%
+
+flowchart TB
+
+BaseCheckout --> CommonCheckout
+ZennCheckout --> CommonCheckout
+QiitaCheckout --> CommonCheckout
+
+base_checkout(base_checkout.py) --> BaseCheckout
+zenn_checkout(zenn_checkout.py) --> ZennCheckout
+qiita_checkout(qiita_checkout.py) --> QiitaCheckout
 
 linkStyle default color:#936, stroke:#f69, stroke-width:2px;
 classDef default fill:#fcc, stroke:#345, stroke-width:3px, font-size:14pt;
@@ -934,10 +967,6 @@ article-markdown-tool/publish$ ./all_publish.py
 - レポジトリを移動しなくても、markdown-tool のコマンドで完結する
 - レポジトリ名やらブランチ名やら覚えなくて良い
 - 原稿を手直ししてもすぐに同期できるので、訂正が負担にならない
-
-公開済み記事の編集機能も、いずれ実装したい。執筆時の記憶を呼び覚ます呪文。
-
-- *_checkout.py
 
 ちょっとした誤字等の修正など、プレビュー抜きで一気に投稿するような機能もいずれ作りたい。
 
