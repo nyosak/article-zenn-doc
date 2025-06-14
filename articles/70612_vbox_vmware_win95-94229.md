@@ -126,7 +126,7 @@ Mac版とかだと、どこかに、OSに合わせてビルド済みの module �
 
 - [How to fix and prevent VirtualBox Kernel driver not installed](https://superuser.com/questions/1285964/how-to-fix-and-prevent-virtualbox-kernel-driver-not-installed)
 
-こいつの 5番の答えを参考にした。
+こいつの 37番の答えを参考にした。
 
 ```bash
 sudo apt install libelf-dev
