@@ -180,6 +180,7 @@ au回線があまりにも使えないので、 7月で解約しようかなど�
 - 弐: [八木作戦 — 二射](https://zenn.dev/nosaki/articles/70628_operation_yagi_au-12771)
 - 参: [八木作戦 — 三射](https://zenn.dev/nosaki/articles/70705_operation_yagi_au-52626)
 - 零: [VirtualBox で Windows 95 を久々に起動する](https://zenn.dev/nosaki/articles/70612_vbox_vmware_win95-94229)
+- スピンオフ夏休み篇: [割り箸と園芸用ビニタイで作る 5G n77/n78 八木アンテナ — 夏休みの工作教室](https://zenn.dev/nosaki/articles/70815_operation_yagi_n77_n78-21002)
 
 ### Qiita
 
@@ -187,3 +188,4 @@ au回線があまりにも使えないので、 7月で解約しようかなど�
 - 弐: [八木作戦 — 二射](https://qiita.com/nyosaki/items/0f6007f08086de1ffbcb)
 - 参: [八木作戦 — 三射](https://qiita.com/nyosaki/items/2fb23af2a560c02ff946)
 - 零: [VirtualBox で Windows 95 を久々に起動する](https://qiita.com/nyosaki/items/3f4de45a5a8b527bc6cd)
+- スピンオフ夏休み篇: [割り箸と園芸用ビニタイで作る 5G n77/n78 八木アンテナ — 夏休みの工作教室](https://qiita.com/nyosaki/items/a9e0b367daa6850d2bc3)
